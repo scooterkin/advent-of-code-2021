@@ -4,12 +4,16 @@ module AdventOfCode
       @filename = File.expand_path(filename)
     end
 
-    def process_part_one
-      count_increases(readings)
+    def self.call(test=false)
+      filename = 'day_one' + (test ? '_test' : '')
+      new("./lib/inputs/#{filename}").call
     end
 
-    def process_part_two
-      count_increases(group_and_sum(readings))
+    def call
+      {
+        part_one: process_part_one,
+        part_two: process_part_two
+      }
     end
 
     private
@@ -47,6 +51,14 @@ module AdventOfCode
             end
           end
         end.map(&:sum)
+      end
+
+      def process_part_one
+        count_increases(readings)
+      end
+
+      def process_part_two
+        count_increases(group_and_sum(readings))
       end
 
       def readings

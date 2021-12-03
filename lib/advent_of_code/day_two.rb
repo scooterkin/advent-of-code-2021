@@ -4,27 +4,16 @@ module AdventOfCode
       @filename = File.expand_path(filename)
     end
 
-    def process_part_one
-      sum_x_values(directions) * sum_y_values(directions)
+    def self.call(test=false)
+      filename = 'day_two' + (test ? '_test' : '')
+      new("./lib/inputs/#{filename}").call
     end
 
-    def process_part_two
-      aim = 0
-      x = 0
-      y = 0
-
-      directions.each do |direction|
-        delta_x = direction.first
-
-        aim += direction.last
-        x += delta_x
-
-        if delta_x.positive?
-          y += delta_x * aim
-        end
-      end
-
-      x * y
+    def call
+      {
+        part_one: process_part_one,
+        part_two: process_part_two
+      }
     end
 
     private
@@ -46,6 +35,29 @@ module AdventOfCode
         @directions ||= File.open(@filename, 'r') do |f|
           f.readlines(chomp: true).map { |direction| calculate_delta(direction) }
         end
+      end
+
+      def process_part_one
+        sum_x_values(directions) * sum_y_values(directions)
+      end
+
+      def process_part_two
+        aim = 0
+        x = 0
+        y = 0
+
+        directions.each do |direction|
+          delta_x = direction.first
+
+          aim += direction.last
+          x += delta_x
+
+          if delta_x.positive?
+            y += delta_x * aim
+          end
+        end
+
+        x * y
       end
 
       def sum_x_values(values)
